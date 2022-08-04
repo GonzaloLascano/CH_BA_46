@@ -1,28 +1,34 @@
 let products = []
 let user = []
 
+//Products
+
 const addProduct = (req, res) => {
     let newProduct = req.body
     newProduct = {...newProduct, id: (products.length === 0 ? 1 : (products[products.length - 1].id + 1))}
     newProduct.price = parseInt(newProduct.price)
     console.log(newProduct)
     products.push(newProduct)
-    res.render('formulario')
+    res.render('formulario', {user})
 }
 
 const getProducts = (req, res) => {
     res.render('lista', {products, user})
 }
 
+//Session and Registration
+
 const getForm = (req, res) => {
-    res.render('formulario', {user})
+    user = req.session.passport.user
+    res.render('formulario', {user}) //product entry form
 }
 
-const home = (req, res) => {
-    const { login } = req.body
-    user = login
-    req.session.user = login
-    res.redirect('/')
+const regForm = (req, res) => {
+    res.render('indexRegistration')
+}
+
+const getLogin = (req, res) => {
+    res.render('indexLogin')
 }
 
 const exit = (req, res) => {
@@ -34,8 +40,17 @@ const exit = (req, res) => {
     } 
 }
 
-/* cargar el setTimeout en la plantilla no me parece la mejor practica pero no se como crear un delay en la respuesta con express. ya que cuando hago setTimeout(()=>{res.redirect}) --},200)
-no me carga la plantilla actual */
+//Error Handling
+
+const errorReg = (req, res) => {
+    let err = 'registration error'
+    res.render('userError', {err});
+}
+
+const errorLogin = (req, res) => {
+    let err = 'wrong credentials'
+    res.render('userError', {err});
+}
 
 
-module.exports = { addProduct, getProducts, getForm, home, exit,}
+module.exports = { addProduct, getProducts, getForm, exit, errorReg, errorLogin, regForm, getLogin}

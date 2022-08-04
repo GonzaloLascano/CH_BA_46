@@ -1,17 +1,26 @@
-const { addProduct, getForm, getProducts, home, exit, goodbye } = require('../controllers/ProdCtrl');
+const passport = require('passport');
+const { exit, getProducts, getForm, getLogin, regForm, addProduct, errorReg, errorLogin } = require('../controllers/ProdCtrl');
 const routes = require('express').Router();
-const { login, countDown } = require('../middleware/auth')
+const { checkAuthentication } = require('../middleware/auth')
 
 
-routes.get('/productos', login, getProducts)
+//Login
+routes.get('/login', getLogin)
+routes.post('/login', passport.authenticate('login', { failureRedirect: '/errorLogin', successRedirect: '/'}))
+routes.get('/errorLogin', errorLogin)
 
-routes.get('/', login, getForm)
+//Registration
+routes.get('/reg', regForm)
+routes.post('/reg', passport.authenticate('register', { failureRedirect: '/errorReg', }), getLogin)
+routes.get('/errorReg', errorReg)
 
-routes.post('/productos', login, addProduct) 
-
-routes.post('/home', home)
-
+//Logout
 routes.post('/exit', exit)
+
+//Home
+routes.get('/', checkAuthentication, getForm)
+routes.get('/productos', checkAuthentication, getProducts)
+routes.post('/productos', checkAuthentication, addProduct) 
 
 
 module.exports = routes

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express') //se llama al modulo de express y se instancia
 const app = express()
 const router = require('./routes/productos')
@@ -7,15 +8,15 @@ const connectMong = require('./dbConfig')
 const mongoStore = require('connect-mongo')
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 const handlebars = require('express-handlebars')
+const {SERVER, SESSION, MONGO} = require('./config')
 
 //variable para que los productos almacenados permanezcan en memoria.
 
 
 // Se crea el servidor, se elige el numero de puerto.
-const PORT = 8080
-const server = app.listen(PORT, async () =>{
+const server = app.listen(SERVER.PORT, async () =>{
     await connectMong();
-    console.log('servidor levantado en el puerto ' + server.address().port)
+    console.log('servidor levantado en el puerto ' + SERVER.PORT)
 })
 server.on('error', (error) => console.log({mensaje: `hubo un error :( ${error}`}))
 
@@ -25,11 +26,11 @@ app.use(express.json())
 
 //Llamando session
 app.use(session({
-    secret:"secret",
+    secret: SESSION.SECRET,
     resave: true,
     saveUninitialized: true,
     store: mongoStore.create({
-        mongoUrl:'mongodb+srv://cosme:fulanito@cluster0.cd55fdx.mongodb.net/ecommerce?retryWrites=true&w=majority',
+        mongoUrl: MONGO.MONGOURL,
         mongoOptions: advancedOptions,
         collectionName: 'sessions'
     }),

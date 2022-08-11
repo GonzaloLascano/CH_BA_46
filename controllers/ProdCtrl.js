@@ -52,5 +52,28 @@ const errorLogin = (req, res) => {
     res.render('userError', {err});
 }
 
+//Info
+const getInfo = (req, res) => {
+    let args = process.argv
+    let so = process.platform
+    let nodeVer = process.version
+    let memoryUsage = JSON.stringify(process.memoryUsage()) 
+    let projectFile = process.cwd()
+    let pId = process.pid
+    let execPath = process.execPath
 
-module.exports = { addProduct, getProducts, getForm, exit, errorReg, errorLogin, regForm, getLogin}
+    console.log(memoryUsage)
+
+    res.render('info', {
+        args,
+        so,
+        nodeVer,
+        memoryUsage,
+        projectFile,
+        pId,
+        execPath
+    })
+}
+
+
+module.exports = { addProduct, getProducts, getForm, exit, errorReg, errorLogin, regForm, getLogin, getInfo}

@@ -1,3 +1,5 @@
+const { logError, log } = require("../log")
+
 let products = []
 let user = []
 
@@ -33,9 +35,11 @@ const getLogin = (req, res) => {
 
 const exit = (req, res) => {
     try {
+        log.info('User logging out')
         req.session.destroy();
         res.render('logout', {user});
     } catch (error) {
+        logError.error('Unable to log out' + error);
         res.status(500).send("error: ", error);
     } 
 }
@@ -43,11 +47,13 @@ const exit = (req, res) => {
 //Error Handling
 
 const errorReg = (req, res) => {
+    logError.error('Registration error');
     let err = 'registration error'
     res.render('userError', {err});
 }
 
 const errorLogin = (req, res) => {
+    logError.error('wrong user credentials');
     let err = 'wrong credentials'
     res.render('userError', {err});
 }
@@ -62,7 +68,7 @@ const getInfo = (req, res) => {
     let pId = process.pid
     let execPath = process.execPath
 
-    console.log(memoryUsage)
+    log.info(memoryUsage)
 
     res.render('info', {
         args,

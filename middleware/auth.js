@@ -1,4 +1,5 @@
-const passport = require('passport')
+const passport = require('passport');
+const { logError, logWarn, log } = require('../log');
 const LocalStrategy = require('passport-local').Strategy;
 const { UsersMongoModel } = require('../models/mongoUsers')
 
@@ -9,12 +10,12 @@ passport.use('login', new LocalStrategy({
         if (err) return done(err)
 
         if (!user) {
-            console.log('could not find the user');
+            logError.error('could not find the user');
             return done(null, false);
         }
 
         if (password !== user.password) {
-            console.log('invalid password');
+            logWarn.warn('invalid password');
             return done(null, false)
         }
 
@@ -28,19 +29,19 @@ passport.use('register', new LocalStrategy({
         UsersMongoModel.findOne({ 'username': username }, function (err, user) {
 
             if (err) {
-              console.log('Error in SignUp: ' + err);
-              return done(err);
+                logError.error('Error in SignUp: ' + err);
+                return done(err);
             }
         
             if (user) {
-              console.log('User already exists');
-              return done(null, false)
+                logError.error('User already exists');
+                return done(null, false)
             }
         
             const newUser = {username: username, password: password}
             UsersMongoModel.create(newUser, (err) => {
                 if (err) {
-                    console.log('Error in Saving user: ' + err);
+                    logError.error('Error in Saving user: ' + err);
                     return done(err);
                 }
                 console.log('User Registration succesful');
@@ -51,12 +52,12 @@ passport.use('register', new LocalStrategy({
 )
 
 passport.serializeUser(function(user, done) {
-    console.log(user);
+    log.info(user);
     done(null, user.username);
 });
   
   passport.deserializeUser(function(username, done) {
-    console.log(username);
+    log.info(username);
     let usuario = username;
     done(null, usuario);
 })

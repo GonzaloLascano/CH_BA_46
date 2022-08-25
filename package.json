@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node autocannon.js"
   },
   "repository": {
     "type": "git",
@@ -17,11 +17,13 @@
   },
   "homepage": "https://github.com/GonzaloLascano/CH_BE_08#readme",
   "dependencies": {
+    "autocannon": "^7.9.0",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.3",
+    "log4js": "^6.6.1",
     "mongoose": "^6.5.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"

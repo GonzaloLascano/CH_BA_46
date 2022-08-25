@@ -9,6 +9,7 @@ const mongoStore = require('connect-mongo')
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 const handlebars = require('express-handlebars')
 const {SERVER, SESSION, MONGO} = require('./config')
+const { log, logError, logWarn } = require('./log.js')
 
 //variable para que los productos almacenados permanezcan en memoria.
 
@@ -16,9 +17,9 @@ const {SERVER, SESSION, MONGO} = require('./config')
 // Se crea el servidor, se elige el numero de puerto.
 const server = app.listen(SERVER.PORT, async () =>{
     await connectMong();
-    console.log('servidor levantado en el puerto ' + SERVER.PORT)
+    log.info('servidor levantado en el puerto ' + SERVER.PORT)
 })
-server.on('error', (error) => console.log({mensaje: `hubo un error :( ${error}`}))
+server.on('error', (error) => logError.error({mensaje: `Unable to run server ${error}`}))
 
 //parseado automatico 
 app.use(express.urlencoded({ extended: true }))

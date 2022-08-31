@@ -1,2 +1,5 @@
 /node_modules
 .env
+.example
+/NGINX_Y_COMANDOS_D30
+/D32_files

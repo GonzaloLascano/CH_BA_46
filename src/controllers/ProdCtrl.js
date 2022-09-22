@@ -1,16 +1,12 @@
-const { logError, log } = require("../log")
+const { logError, log } = require("../../config/log")
+const { addingProduct, products } = require('../services/productLogic')
 
-let products = []
 let user = []
 
 //Products
 
 const addProduct = (req, res) => {
-    let newProduct = req.body
-    newProduct = {...newProduct, id: (products.length === 0 ? 1 : (products[products.length - 1].id + 1))}
-    newProduct.price = parseInt(newProduct.price)
-    console.log(newProduct)
-    products.push(newProduct)
+    let result = addingProduct(req.body)
     res.render('formulario', {user})
 }
 
@@ -42,7 +38,7 @@ const exit = (req, res) => {
         logError.error('Unable to log out' + error);
         res.status(500).send("error: ", error);
     } 
-}
+}// esto tambien podria estar en "services"
 
 //Error Handling
 
@@ -68,7 +64,7 @@ const getInfo = (req, res) => {
     let pId = process.pid
     let execPath = process.execPath
 
-    log.info(memoryUsage)
+    log.info(memoryUsage)// podria estar en services.js
 
     res.render('info', {
         args,

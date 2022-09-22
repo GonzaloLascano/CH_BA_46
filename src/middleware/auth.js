@@ -1,12 +1,14 @@
 const passport = require('passport');
-const { logError, logWarn, log } = require('../log');
+const { logError, logWarn, log } = require('../../config/log');
 const LocalStrategy = require('passport-local').Strategy;
 const { UsersMongoModel } = require('../models/mongoUsers')
 
 passport.use('login', new LocalStrategy({
     passReqToCallback: true,
-}, function(req, username, password, done) {
-    UsersMongoModel.findOne({ username }, (err, user) => {
+    usernameField: 'email',
+    passwordField: 'password'
+}, function(req, email, password, done) {
+    UsersMongoModel.findOne({ email }, (err, user) => {
         if (err) return done(err)
 
         if (!user) {
@@ -25,8 +27,10 @@ passport.use('login', new LocalStrategy({
 
 passport.use('register', new LocalStrategy({
     passReqToCallback:true,
-},  function (req, username, password, done) {
-        UsersMongoModel.findOne({ 'username': username }, function (err, user) {
+    usernameField: 'email',
+    passwordField: 'password'
+},  function (req, email, password, done) {
+        UsersMongoModel.findOne({ 'email': email }, function (err, user) {
 
             if (err) {
                 logError.error('Error in SignUp: ' + err);
@@ -38,7 +42,7 @@ passport.use('register', new LocalStrategy({
                 return done(null, false)
             }
         
-            const newUser = {username: username, password: password}
+            const newUser = {username: email, password: password}
             UsersMongoModel.create(newUser, (err) => {
                 if (err) {
                     logError.error('Error in Saving user: ' + err);
@@ -52,13 +56,14 @@ passport.use('register', new LocalStrategy({
 )
 
 passport.serializeUser(function(user, done) {
-    log.info(user);
-    done(null, user.username);
+    log.info('USER LOGGED IN SUCCESSFULLY');
+    log.info(user._id);
+    done(null, user._id);
 });
   
-  passport.deserializeUser(function(username, done) {
-    log.info(username);
-    let usuario = username;
+  passport.deserializeUser(function(id, done) {
+    log.info(id);
+    let usuario = id;
     done(null, usuario);
 })
 

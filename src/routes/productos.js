@@ -3,7 +3,7 @@ const { exit, getProducts, getForm, getLogin, regForm, addProduct, errorReg, err
 const routes = require('express').Router();
 const { reqLog } = require('../middleware/reqLog.js')
 const { checkAuthentication } = require('../middleware/auth');
-const { logWarn } = require('../log');
+const { logWarn } = require('../../config/log');
 
 //Login
 routes.get('/login',reqLog, getLogin)
@@ -12,7 +12,7 @@ routes.get('/errorLogin', reqLog, errorLogin)
 
 //Registration
 routes.get('/reg', reqLog, regForm)
-routes.post('/reg', reqLog,passport.authenticate('register', { failureRedirect: '/errorReg', }), getLogin)
+routes.post('/reg', reqLog, passport.authenticate('register', { failureRedirect: '/errorReg', }), getLogin)
 routes.get('/errorReg', reqLog,errorReg)
 
 //Logout

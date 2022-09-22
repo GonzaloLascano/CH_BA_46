@@ -1,15 +1,15 @@
 require('dotenv').config();
 const express = require('express') //se llama al modulo de express y se instancia
 const app = express()
-const router = require('./routes/productos')
+const router = require('./src/routes/productos.js')
 const session = require('express-session')
 const passport = require('passport')
-const connectMong = require('./dbConfig')
+const connectMong = require('./config/dbConfig.js')
 const mongoStore = require('connect-mongo')
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 const handlebars = require('express-handlebars')
-const {SERVER, SESSION, MONGO} = require('./config')
-const { log, logError, logWarn } = require('./log.js')
+const {SERVER, SESSION, MONGO} = require('./config/config.js')
+const { log, logError, logWarn } = require('./config/log.js')
 
 //variable para que los productos almacenados permanezcan en memoria.
 

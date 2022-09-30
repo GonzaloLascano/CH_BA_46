@@ -4,3 +4,7 @@
 [2022-09-21T23:14:34.934] [ERROR] error - wrong user credentials
 [2022-09-21T23:24:46.480] [ERROR] error - wrong user credentials
 [2022-09-21T23:25:50.303] [ERROR] error - wrong user credentials
+[2022-09-29T17:50:21.697] [ERROR] error - Unable to find requested product. at modifyingProduct
+[2022-09-29T18:59:43.751] [ERROR] error - Unable to find requested product. at deletingProduct
+[2022-09-29T19:01:45.142] [ERROR] error - Unable to find requested product. at modifyingProduct
+[2022-09-29T19:01:45.144] [ERROR] error - Unable to find requested product. at deletingProduct

@@ -1,9 +1,10 @@
 const passport = require('passport');
-const { exit, getProducts, getForm, getLogin, regForm, addProduct, errorReg, errorLogin, getInfo } = require('../controllers/ProdCtrl');
+const { exit, getProducts, getForm, getLogin, regForm, addProduct, errorReg, errorLogin, getInfo, deleteProduct, modifyProduct } = require('../controllers/ProdCtrl');
 const routes = require('express').Router();
 const { reqLog } = require('../middleware/reqLog.js')
 const { checkAuthentication } = require('../middleware/auth');
 const { logWarn } = require('../../config/log');
+const { modifyingProduct } = require('../services/productLogic');
 
 //Login
 routes.get('/login',reqLog, getLogin)
@@ -19,9 +20,11 @@ routes.get('/errorReg', reqLog,errorReg)
 routes.post('/exit', reqLog, exit)
 
 //Home
-routes.get('/', reqLog, checkAuthentication, getForm)
-routes.get('/productos', reqLog, checkAuthentication, getProducts)
-routes.post('/productos', reqLog, checkAuthentication, addProduct)
+routes.get('/', reqLog, getForm)
+routes.get('/productos', reqLog, getProducts)
+routes.post('/productos', reqLog, addProduct)
+routes.put('/productos/:id', reqLog, modifyProduct)
+routes.delete('/productos/:id', reqLog, deleteProduct)
 
 //Info
 routes.get('/info', reqLog, getInfo)

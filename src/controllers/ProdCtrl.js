@@ -1,5 +1,5 @@
 const { logError, log } = require("../../config/log")
-const { addingProduct, products } = require('../services/productLogic')
+const { addingProduct, modifyingProduct, products, deletingProduct } = require('../services/productLogic')
 
 let user = []
 
@@ -7,11 +7,21 @@ let user = []
 
 const addProduct = (req, res) => {
     let result = addingProduct(req.body)
-    res.render('formulario', {user})
+    res.send(result)
 }
 
 const getProducts = (req, res) => {
-    res.render('lista', {products, user})
+    res.send(products)
+}
+
+const modifyProduct = (req, res) => {
+    let result = modifyingProduct(req.body, req.params.id)
+    res.json(result)
+}
+
+const deleteProduct = (req, res) => {
+    let result = deletingProduct(req.params.id)
+    res.json(result)
 }
 
 //Session and Registration
@@ -78,4 +88,4 @@ const getInfo = (req, res) => {
 }
 
 
-module.exports = { addProduct, getProducts, getForm, exit, errorReg, errorLogin, regForm, getLogin, getInfo}
+module.exports = { addProduct, getProducts, modifyProduct, deleteProduct, getForm, exit, errorReg, errorLogin, regForm, getLogin, getInfo}

@@ -1,0 +1,65 @@
+Testeo con modulo http en axios:
+---------------------------------
+
+Consola del servidor:
+
+[nodemon] starting `node index.js`
+mongo connected successfully
+[2022-09-29T19:30:46.416] [INFO] default - servidor levantado en el puerto 8080
+[2022-09-29T19:30:52.558] [INFO] default - GET Request has been made to /productos
+[2022-09-29T19:30:52.569] [INFO] default - POST Request has been made to /productos
+[2022-09-29T19:30:52.569] [INFO] default - [object Object]was added
+[2022-09-29T19:30:52.572] [INFO] default - PUT Request has been made to /productos/1
+[2022-09-29T19:30:52.572] [INFO] default - modifying... {"title":"perfume","price":342,"thumbnail":"perfumeURL","id":1}
+[2022-09-29T19:30:52.572] [INFO] default - Modified product result: {"title":"perfume frances","price":351,"thumbnail":"perfumeURL","id":1}
+[2022-09-29T19:30:52.574] [INFO] default - DELETE Request has been made to /productos/1
+[2022-09-29T19:30:52.574] [INFO] default - deleting... {"title":"perfume frances","price":351,"thumbnail":"perfumeURL","id":1}
+[2022-09-29T19:30:52.574] [INFO] default - Product succesfully deleted
+
+Consola del cliente:
+
+node index.manual-test.js
+[]
+get request to productos finished
+Product succesfully deleted
+delete request to productos/id finished
+Modified product result: {"title":"perfume frances","price":351,"thumbnail":"perfumeURL","id":1}
+put request to productos/id finished
+[ { title: 'perfume', price: 342, thumbnail: 'perfumeURL', id: 1 } ]
+post request to productos finished
+
+notas: el proceso se da en orden y del lado del servidor la informacion se muestra de forma muy ordenada. No es el caso de la consola del lado del cliente
+donde cada respuesta esta apareciendo en orden diferente al que tenian cuando se ejecutaron.
+
+
+Testeo con Mocha Chai y Supertest:
+------------------------------------
+
+Consola del cliente:
+
+$ npm run test
+
+> desafrio_clase_10@1.0.0 test
+> mocha api.test.js
+
+
+
+  Iniciando testeo de apirestful, seccion de productos
+    POST petitions
+[2022-09-29T21:27:12.957] [INFO] default - [{"title":"Soap","price":604,"thumbnail":"https://loremflickr.com/640/480/business","id":1}]was recieved from server
+      ✔ deberia responder un status 200 y el producto agregado (94ms)
+    GET petitions
+[2022-09-29T21:27:13.027] [INFO] default - esta es la lista del productos hasta el momento: [{"title":"Soap","price":604,"thumbnail":"https://loremflickr.com/640/480/business","id":1}]
+      ✔ deberia responder un status 200 y devolver array de productos (67ms)
+    PUT petitions
+[2022-09-29T21:27:13.103] [INFO] default - Modified product from: {"title":"Soap","price":604,"thumbnail":"https://loremflickr.com/640/480/business","id":1} to: {"title":"Bike","price":604,"thumbnail":"https://loremflickr.com/640/480/business","id":1}
+      ✔ deberia responder un status 200 y mensaje enunciando producto antes y despues de ser modificado (75ms)
+    DELETE petitions
+[2022-09-29T21:27:13.171] [INFO] default - Product succesfully deleted
+      ✔ deberia responder un status 200 y mensaje confirmando eliminacion (67ms)
+
+
+  4 passing (311ms)
+
+Notas: el testeo con mocha resulta super efectivo para ver de manera rapida y automatica lo que llega al cliente. Sin embargo, si se detectan problemas es poco practico señalar 
+en que punto se encuentran exactamente del lado del servidor, si no se lo personaliza especificamente para brindar esta informacion.

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "node autocannon.js"
+    "test": "mocha api.test.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "homepage": "https://github.com/GonzaloLascano/CH_BE_08#readme",
   "dependencies": {
     "autocannon": "^7.9.0",
+    "axios": "^0.27.2",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
@@ -28,5 +29,11 @@
     "mongoose": "^6.5.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.5.0",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "supertest": "^6.2.4"
   }
 }

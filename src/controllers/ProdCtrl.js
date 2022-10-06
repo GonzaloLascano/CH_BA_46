@@ -27,7 +27,7 @@ const deleteProduct = (req, res) => {
 //Session and Registration
 
 const getForm = (req, res) => {
-    user = req.session.passport.user
+    //user = req.session.passport.user
     res.render('formulario', {user}) //product entry form
 }
 

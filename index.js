@@ -2,6 +2,9 @@ require('dotenv').config();
 const express = require('express') //se llama al modulo de express y se instancia
 const app = express()
 const router = require('./src/routes/productos.js')
+const { graphqlHTTP } = require('express-graphql')
+const { buildSchema } = require('graphql')
+const { createProduct, updateProduct, deleteProduct, getProducts } = require('./src/models/productsQL')
 const session = require('express-session')
 const passport = require('passport')
 const connectMong = require('./config/dbConfig.js')
@@ -20,6 +23,27 @@ const server = app.listen(SERVER.PORT, async () =>{
     log.info('servidor levantado en el puerto ' + SERVER.PORT)
 })
 server.on('error', (error) => logError.error({mensaje: `Unable to run server ${error}`}))
+
+const schema = buildSchema(`
+    type Product {
+        id: ID!
+        title: String,
+        price: Int,
+        thumbnail: String,
+    }
+    input ProductInput {
+        title: String,
+        price: Int,
+        thumbnail: String,
+    }
+    type Query {
+        getProducts: [Product]
+    }
+    type Mutation {
+        createProduct(data: ProductInput): Product,
+        updateProduct(productId: ID!, newContent: ProductInput): Product,
+        deleteProduct(productId: ID!): Product 
+    }`)
 
 //parseado automatico 
 app.use(express.urlencoded({ extended: true }))
@@ -45,6 +69,17 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Graph QL
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: {
+        getProducts,
+        createProduct,
+        updateProduct,
+        deleteProduct
+    },
+    graphiql: true
+}))
 //Llamado a router
 app.use(router)
 

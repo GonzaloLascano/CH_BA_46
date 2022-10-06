@@ -21,11 +21,12 @@ routes.post('/exit', reqLog, exit)
 
 //Home
 routes.get('/', reqLog, getForm)
+/* 
 routes.get('/productos', reqLog, getProducts)
 routes.post('/productos', reqLog, addProduct)
 routes.put('/productos/:id', reqLog, modifyProduct)
 routes.delete('/productos/:id', reqLog, deleteProduct)
-
+ */
 //Info
 routes.get('/info', reqLog, getInfo)
 

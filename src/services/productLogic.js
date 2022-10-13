@@ -7,7 +7,7 @@ const addingProduct = (productToAdd) => {
     productToAdd.price = parseInt(productToAdd.price)
     log.info(JSON.stringify(productToAdd) + 'was added')
     products.push(productToAdd)
-    return products
+    return productToAdd
 }
 
 const modifyingProduct = (newContent, productId) => {

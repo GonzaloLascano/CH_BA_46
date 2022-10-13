@@ -1,39 +1,15 @@
-const passport = require('passport');
-const { exit, getProducts, getForm, getLogin, regForm, addProduct, errorReg, errorLogin, getInfo, deleteProduct, modifyProduct } = require('../controllers/ProdCtrl');
-const routes = require('express').Router();
-const { reqLog } = require('../middleware/reqLog.js')
-const { checkAuthentication } = require('../middleware/auth');
+const Router = require('koa-router')
+const { reqLog } = require('../middleware/reqLog.js');
 const { logWarn } = require('../../config/log');
-const { modifyingProduct } = require('../services/productLogic');
+const { getProducts, addProduct, modifyProduct, deleteProduct, wellcomeMessage } = require('../controllers/ProdCtrl.js');
 
-//Login
-routes.get('/login',reqLog, getLogin)
-routes.post('/login', reqLog, passport.authenticate('login', { failureRedirect: '/errorLogin', successRedirect: '/'}))
-routes.get('/errorLogin', reqLog, errorLogin)
-
-//Registration
-routes.get('/reg', reqLog, regForm)
-routes.post('/reg', reqLog, passport.authenticate('register', { failureRedirect: '/errorReg', }), getLogin)
-routes.get('/errorReg', reqLog,errorReg)
-
-//Logout
-routes.post('/exit', reqLog, exit)
+const router = new Router();
 
 //Home
-routes.get('/', reqLog, getForm)
-/* 
-routes.get('/productos', reqLog, getProducts)
-routes.post('/productos', reqLog, addProduct)
-routes.put('/productos/:id', reqLog, modifyProduct)
-routes.delete('/productos/:id', reqLog, deleteProduct)
- */
-//Info
-routes.get('/info', reqLog, getInfo)
+router.get('/', reqLog, wellcomeMessage)
+router.get('/productos', reqLog, getProducts)
+router.post('/productos', reqLog, addProduct)
+router.put('/productos/:id', reqLog, modifyProduct)
+router.delete('/productos/:id', reqLog, deleteProduct)
 
-
-routes.all("*", (req, res) => {
-    res.status(404).send("The page wasn't found")
-    logWarn.warn("The page wasn't found");
-})
-
-module.exports = routes
+module.exports = router

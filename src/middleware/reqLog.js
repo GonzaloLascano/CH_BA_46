@@ -1,7 +1,7 @@
 const { log } = require("../../config/log.js")
 
-const reqLog = (req, res, next) => {
-    log.info(`${req.method} Request has been made to ${req.path}`)
+const reqLog = (ctx, next) => {
+    log.info(`${ctx.request.method} Request has been made to ${ctx.request.path}`)
     next()
 }
 
